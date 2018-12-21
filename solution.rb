@@ -1,27 +1,23 @@
-require "sinatra" 
-require "make_todo" 
-require "httparty" 
+require 'sinatra' 
+require 'make_todo' 
 
-get '/' do 
- 	redirect '/tareas' 
+get '/?' do 
+  @title="Lista de Tareas" 
+  @items = Tarea.all   
+  erb :index 
+end  
+ 
+post '/' do 
+    n=Tarea.create(params[:content]) 
+    redirect '/' 
 end 
  
-get '/tareas' do 
- 	@tareas = Tarea.all 
- 	erb :tareas 
-end 
-
-post '/tareas' do 
- 	@tarea = Tarea.create(params[:tarea]) 
-	redirect '/tareas' 
+patch '/' do 
+  	Tarea.update(params[:done]) 
+  	redirect '/' 
 end 
  
-get '/tareas/edit/:id' do 
- 	@tarea = Tarea.update(params[:id]) 
- 	redirect '/tareas' 
-end 
-
-get '/tareas/delete/:id' do 
- 	  @tarea = Tarea.destroy(params[:id]) 
- 	  redirect '/tareas' 
+delete '/' do 
+ 	Tarea.destroy(params[:id]) 
+ 	redirect '/' 
 end 
